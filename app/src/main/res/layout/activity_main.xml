@@ -84,6 +84,7 @@
 
         <!-- Home Button -->
         <LinearLayout
+            android:id="@+id/homeLinearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -127,6 +128,7 @@
 
         <!-- Adopt Button -->
         <LinearLayout
+            android:id="@+id/adoptLinearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -148,6 +150,7 @@
 
         <!-- Appointment Button -->
         <LinearLayout
+            android:id="@+id/appointmentLinearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

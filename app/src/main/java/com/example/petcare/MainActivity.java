@@ -12,8 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 
 public class MainActivity extends AppCompatActivity {
+
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -27,5 +30,22 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Load the default Home fragment
+        if (savedInstanceState == null) {
+            replaceFragment(new HomeFragment());
+        }
+
+        // Set click listeners for navigation buttons
+        findViewById(R.id.StoreLinearLayout).setOnClickListener(v -> replaceFragment(new Store()));
+        findViewById(R.id.homeLinearLayout).setOnClickListener(v -> replaceFragment(new HomeFragment()));
+        findViewById(R.id.adoptLinearLayout).setOnClickListener(v -> replaceFragment(new AdoptFragment()));
+        findViewById(R.id.appointmentLinearLayout).setOnClickListener(v -> replaceFragment(new AppointmentFragment()));
+    }
+
+    // Helper method to replace the current fragment
+    private void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 }

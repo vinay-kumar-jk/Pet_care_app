@@ -1,64 +1,58 @@
 package com.example.petcare;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Store#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Store extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private RecyclerView productsRecyclerView;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public Store() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Store.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Store newInstance(String param1, String param2) {
-        Store fragment = new Store();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_store, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        productsRecyclerView = view.findViewById(R.id.productsRecyclerView);
+
+        // Prepare product list
+        List<Product> products = new ArrayList<>();
+        products.add(new Product("Dog Food", R.drawable.dog_food));
+        products.add(new Product("Cat Food", R.drawable.cat_food));
+        products.add(new Product("Dog Shampoo", R.drawable.dog_shampoo));
+        products.add(new Product("Training pad", R.drawable.training_pads));
+        products.add(new Product("Pet lesh", R.drawable.pet_leash));
+        products.add(new Product("Fish Food", R.drawable.fish_food));
+        products.add(new Product("Treat ball", R.drawable.treat_ball));
+        products.add(new Product("Harnes", R.drawable.harnes));
+        products.add(new Product("Dog Chew Bone", R.drawable.dog_chew));
+        products.add(new Product("Pet Toys", R.drawable.pet_toys_combo));
+
+
+
+        // Add more products as needed
+
+        // Set up adapter and RecyclerView
+        ProductAdapter adapter = new ProductAdapter(requireContext(), products, product -> {
+            // Handle Add to Cart
+            Toast.makeText(requireContext(), product.getName() + " added to cart", Toast.LENGTH_SHORT).show();
+        });
+
+        productsRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        productsRecyclerView.setAdapter(adapter);
     }
 }

@@ -1,64 +1,92 @@
 package com.example.petcare;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AppointmentFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.util.ArrayList;
+import java.util.List;
+
 public class AppointmentFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private RecyclerView recyclerView;
+    private FloatingActionButton addAppointmentButton;
+    private AppointmentAdapter adapter;
+    private List<Appointment> appointmentList;
+    private com.example.appointments.AppointmentDatabaseHelper dbHelper;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public AppointmentFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AppointmentFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AppointmentFragment newInstance(String param1, String param2) {
-        AppointmentFragment fragment = new AppointmentFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_appointment, container, false);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_appointment, container, false);
+        recyclerView = view.findViewById(R.id.rvAppointments);
+        addAppointmentButton = view.findViewById(R.id.btnAddAppointment);
+
+        // Initialize the database helper
+        dbHelper = new com.example.appointments.AppointmentDatabaseHelper(getContext());
+
+        // Load appointments from database
+        appointmentList = dbHelper.getAllAppointments();
+        adapter = new AppointmentAdapter(appointmentList);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
+        // Add button click listener
+        addAppointmentButton.setOnClickListener(v -> {
+            View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_appointment, null);
+
+            EditText etPetName = dialogView.findViewById(R.id.etPetName);
+            EditText etAppointmentType = dialogView.findViewById(R.id.etAppointmentType);
+            EditText etDate = dialogView.findViewById(R.id.etDate);
+            EditText etTime = dialogView.findViewById(R.id.etTime);
+            EditText etLocation = dialogView.findViewById(R.id.etLocation);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Add Appointment");
+            builder.setView(dialogView);
+
+            builder.setPositiveButton("Save", (dialog, which) -> {
+                String petName = etPetName.getText().toString();
+                String appointmentType = etAppointmentType.getText().toString();
+                String date = etDate.getText().toString();
+                String time = etTime.getText().toString();
+                String location = etLocation.getText().toString();
+
+                if (petName.isEmpty() || appointmentType.isEmpty() || date.isEmpty() || time.isEmpty() || location.isEmpty()) {
+                    Toast.makeText(getContext(), "All fields are required!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Appointment newAppointment = new Appointment(petName, appointmentType, date, time, location, "Upcoming");
+
+                // Save to database
+                dbHelper.addAppointment(newAppointment);
+
+                // Update the RecyclerView
+                appointmentList.add(newAppointment);
+                adapter.notifyItemInserted(appointmentList.size() - 1);
+
+                Toast.makeText(getContext(), "Appointment added!", Toast.LENGTH_SHORT).show();
+            });
+
+            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+            builder.create().show();
+        });
+
+
+
+
+
+        return view;
     }
 }

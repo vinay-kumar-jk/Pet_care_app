@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etPetName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Pet Name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/etAppointmentType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Appointment Type"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/etTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Time"
+        android:inputType="time" />
+
+    <EditText
+        android:id="@+id/etLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Location"
+        android:inputType="text" />
+
+</LinearLayout>

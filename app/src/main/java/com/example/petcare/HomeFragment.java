@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
         offerImages = new ArrayList<>();
         offerImages.add(R.drawable.offer1); // Replace with your drawable images
         offerImages.add(R.drawable.offer2);
-        offerImages.add(R.drawable.offer3);
+        offerImages.add(R.drawable.img_11);
 
         // Set up adapter
         OfferAdapter adapter = new OfferAdapter(getContext(), offerImages);

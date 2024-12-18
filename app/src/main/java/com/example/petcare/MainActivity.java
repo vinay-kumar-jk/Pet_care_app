@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
@@ -15,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 public class MainActivity extends AppCompatActivity {
+    ImageButton ab;
 
 
 
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        ab = findViewById(R.id.accountButton);
 
         // Load the default Home fragment
         if (savedInstanceState == null) {
@@ -47,5 +50,11 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
+    }
+
+
+    public void nn(View view) {
+        Intent intent=new Intent(getApplicationContext(),AccountActivity.class);
+        startActivity(intent);
     }
 }

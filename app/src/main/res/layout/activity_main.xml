@@ -30,6 +30,7 @@
 
         <!-- Right Side - Account Button -->
         <ImageButton
+            android:onClick="nn"
             android:id="@+id/accountButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
